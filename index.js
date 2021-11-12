@@ -20,6 +20,7 @@ async function run() {
         const serviceCollection = database.collection('services');
         const purchasedCollection = database.collection('purchased');
         const usersCollection = database.collection('users');
+        const reviewsCollection = database.collection('reviews');
         //get all service we provide
         app.get('/services', async (req, res) => {
             const cursor = serviceCollection.find({});
@@ -122,6 +123,26 @@ async function run() {
         app.post('/services', async (req, res) => {
             const cursor = req.body;
             const result = await serviceCollection.insertOne(cursor);
+            res.json(result);
+        });
+        //set review
+        app.post('/reviews', async (req, res) => {
+            const cursor = req.body;
+            const result = await reviewsCollection.insertOne(cursor);
+            res.json(result);
+        });
+        //get all review
+        //find all the order
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewsCollection.find({});
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
+        //cancel review
+        app.delete('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await reviewsCollection.deleteOne(query);
             res.json(result);
         });
 
