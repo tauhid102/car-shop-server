@@ -131,7 +131,6 @@ async function run() {
             const result = await reviewsCollection.insertOne(cursor);
             res.json(result);
         });
-        //get all review
         //find all the order
         app.get('/reviews', async (req, res) => {
             const cursor = reviewsCollection.find({});
